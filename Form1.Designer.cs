@@ -73,6 +73,7 @@
             this.btSetSerialN = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.gbPort = new System.Windows.Forms.GroupBox();
+            this.buttonRefresh = new System.Windows.Forms.Button();
             this.gbCommand = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txMesenger = new System.Windows.Forms.TextBox();
@@ -90,7 +91,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.checkBoxText = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.buttonRefresh = new System.Windows.Forms.Button();
             this.gbIgnition.SuspendLayout();
             this.gbHeat.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -629,6 +629,17 @@
             this.gbPort.TabStop = false;
             this.gbPort.Text = "Выбор порта";
             // 
+            // buttonRefresh
+            // 
+            this.buttonRefresh.Location = new System.Drawing.Point(296, 41);
+            this.buttonRefresh.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonRefresh.Name = "buttonRefresh";
+            this.buttonRefresh.Size = new System.Drawing.Size(68, 30);
+            this.buttonRefresh.TabIndex = 8;
+            this.buttonRefresh.Text = "Refresh";
+            this.buttonRefresh.UseVisualStyleBackColor = true;
+            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
+            // 
             // gbCommand
             // 
             this.gbCommand.BackColor = System.Drawing.SystemColors.Control;
@@ -669,17 +680,17 @@
             this.txMesenger.ReadOnly = true;
             this.txMesenger.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txMesenger.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txMesenger.Size = new System.Drawing.Size(378, 341);
+            this.txMesenger.Size = new System.Drawing.Size(378, 316);
             this.txMesenger.TabIndex = 41;
             this.txMesenger.WordWrap = false;
             this.txMesenger.TextChanged += new System.EventHandler(this.txMesenger_TextChanged);
             // 
             // btClear
             // 
-            this.btClear.Location = new System.Drawing.Point(12, 654);
+            this.btClear.Location = new System.Drawing.Point(12, 645);
             this.btClear.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btClear.Name = "btClear";
-            this.btClear.Size = new System.Drawing.Size(73, 34);
+            this.btClear.Size = new System.Drawing.Size(93, 40);
             this.btClear.TabIndex = 42;
             this.btClear.Text = "Очистить";
             this.btClear.UseVisualStyleBackColor = true;
@@ -813,7 +824,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(277, 655);
+            this.button2.Location = new System.Drawing.Point(283, 645);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(105, 39);
             this.button2.TabIndex = 45;
@@ -824,7 +835,7 @@
             // checkBoxText
             // 
             this.checkBoxText.AutoSize = true;
-            this.checkBoxText.Location = new System.Drawing.Point(185, 653);
+            this.checkBoxText.Location = new System.Drawing.Point(185, 638);
             this.checkBoxText.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBoxText.Name = "checkBoxText";
             this.checkBoxText.Size = new System.Drawing.Size(15, 14);
@@ -835,22 +846,12 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(105, 669);
+            this.label6.Location = new System.Drawing.Point(111, 655);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(148, 26);
             this.label6.TabIndex = 47;
             this.label6.Text = "включение редактирование\r\n          данных в окне";
-            // 
-            // buttonRefresh
-            // 
-            this.buttonRefresh.Location = new System.Drawing.Point(296, 40);
-            this.buttonRefresh.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.buttonRefresh.Name = "buttonRefresh";
-            this.buttonRefresh.Size = new System.Drawing.Size(68, 30);
-            this.buttonRefresh.TabIndex = 8;
-            this.buttonRefresh.Text = "Refresh";
-            this.buttonRefresh.UseVisualStyleBackColor = true;
-            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
+            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // Generation
             // 
@@ -859,7 +860,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
-            this.ClientSize = new System.Drawing.Size(874, 720);
+            this.ClientSize = new System.Drawing.Size(874, 696);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.checkBoxText);
             this.Controls.Add(this.button2);
@@ -883,6 +884,7 @@
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Generation";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Генератор";
             this.Load += new System.EventHandler(this.Generation_Load);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Generation_KeyPress);
