@@ -57,6 +57,7 @@
             this.btIgnitionOFF = new System.Windows.Forms.Button();
             this.btIgnitionON = new System.Windows.Forms.Button();
             this.gbIgnition = new System.Windows.Forms.GroupBox();
+            this.buttonTime = new System.Windows.Forms.Button();
             this.btSbrosSintez = new System.Windows.Forms.Button();
             this.btMinusSint = new System.Windows.Forms.Button();
             this.btPlusSint = new System.Windows.Forms.Button();
@@ -86,6 +87,10 @@
             this.porogLamp = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.photoCurrent = new System.Windows.Forms.TextBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.checkBoxText = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.buttonRefresh = new System.Windows.Forms.Button();
             this.gbIgnition.SuspendLayout();
             this.gbHeat.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -105,7 +110,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(245, 40);
+            this.btnClose.Location = new System.Drawing.Point(222, 41);
             this.btnClose.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(68, 30);
@@ -174,6 +179,7 @@
             // cbCommand
             // 
             this.cbCommand.AllowDrop = true;
+            this.cbCommand.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.830189F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cbCommand.FormattingEnabled = true;
             this.cbCommand.Items.AddRange(new object[] {
             "посмотреть температуру",
@@ -181,9 +187,8 @@
             this.cbCommand.Location = new System.Drawing.Point(156, 47);
             this.cbCommand.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbCommand.Name = "cbCommand";
-            this.cbCommand.Size = new System.Drawing.Size(157, 21);
+            this.cbCommand.Size = new System.Drawing.Size(194, 24);
             this.cbCommand.TabIndex = 11;
-           // this.cbCommand.SelectedIndexChanged += new System.EventHandler(this.cbCommand_SelectedIndexChanged);
             // 
             // lbZagolovok
             // 
@@ -209,13 +214,13 @@
             // checkBoxCommandList
             // 
             this.checkBoxCommandList.AutoSize = true;
-            this.checkBoxCommandList.Location = new System.Drawing.Point(319, 53);
+            this.checkBoxCommandList.Location = new System.Drawing.Point(356, 52);
             this.checkBoxCommandList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBoxCommandList.Name = "checkBoxCommandList";
             this.checkBoxCommandList.Size = new System.Drawing.Size(15, 14);
             this.checkBoxCommandList.TabIndex = 14;
             this.checkBoxCommandList.UseVisualStyleBackColor = true;
-         //   this.checkBoxCommandList.CheckedChanged += new System.EventHandler(this.checkBoxCommandList_CheckedChanged);
+            this.checkBoxCommandList.CheckedChanged += new System.EventHandler(this.checkBoxCommandList_CheckedChanged);
             // 
             // tbF
             // 
@@ -252,7 +257,7 @@
             this.btSendCMLIST.Location = new System.Drawing.Point(195, 108);
             this.btSendCMLIST.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btSendCMLIST.Name = "btSendCMLIST";
-            this.btSendCMLIST.Size = new System.Drawing.Size(68, 30);
+            this.btSendCMLIST.Size = new System.Drawing.Size(118, 30);
             this.btSendCMLIST.TabIndex = 19;
             this.btSendCMLIST.Text = "Send";
             this.btSendCMLIST.UseVisualStyleBackColor = true;
@@ -379,6 +384,7 @@
             // gbIgnition
             // 
             this.gbIgnition.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.gbIgnition.Controls.Add(this.buttonTime);
             this.gbIgnition.Controls.Add(this.btSbrosSintez);
             this.gbIgnition.Controls.Add(this.btMinusSint);
             this.gbIgnition.Controls.Add(this.btPlusSint);
@@ -394,6 +400,17 @@
             this.gbIgnition.TabIndex = 32;
             this.gbIgnition.TabStop = false;
             this.gbIgnition.Text = "Автоподстройка";
+            // 
+            // buttonTime
+            // 
+            this.buttonTime.Location = new System.Drawing.Point(6, 291);
+            this.buttonTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonTime.Name = "buttonTime";
+            this.buttonTime.Size = new System.Drawing.Size(113, 30);
+            this.buttonTime.TabIndex = 35;
+            this.buttonTime.Text = "текущее время";
+            this.buttonTime.UseVisualStyleBackColor = true;
+            this.buttonTime.Click += new System.EventHandler(this.buttonTime_Click);
             // 
             // btSbrosSintez
             // 
@@ -598,6 +615,7 @@
             // gbPort
             // 
             this.gbPort.BackColor = System.Drawing.SystemColors.Control;
+            this.gbPort.Controls.Add(this.buttonRefresh);
             this.gbPort.Controls.Add(this.btnOpen);
             this.gbPort.Controls.Add(this.cbPort);
             this.gbPort.Controls.Add(this.btnClose);
@@ -606,7 +624,7 @@
             this.gbPort.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbPort.Name = "gbPort";
             this.gbPort.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbPort.Size = new System.Drawing.Size(358, 97);
+            this.gbPort.Size = new System.Drawing.Size(377, 97);
             this.gbPort.TabIndex = 38;
             this.gbPort.TabStop = false;
             this.gbPort.Text = "Выбор порта";
@@ -626,11 +644,10 @@
             this.gbCommand.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbCommand.Name = "gbCommand";
             this.gbCommand.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbCommand.Size = new System.Drawing.Size(358, 143);
+            this.gbCommand.Size = new System.Drawing.Size(377, 143);
             this.gbCommand.TabIndex = 39;
             this.gbCommand.TabStop = false;
             this.gbCommand.Text = "Ввод команд";
-           // this.gbCommand.Enter += new System.EventHandler(this.gbCommand_Enter);
             // 
             // label2
             // 
@@ -652,7 +669,7 @@
             this.txMesenger.ReadOnly = true;
             this.txMesenger.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txMesenger.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txMesenger.Size = new System.Drawing.Size(361, 341);
+            this.txMesenger.Size = new System.Drawing.Size(378, 341);
             this.txMesenger.TabIndex = 41;
             this.txMesenger.WordWrap = false;
             this.txMesenger.TextChanged += new System.EventHandler(this.txMesenger_TextChanged);
@@ -742,21 +759,23 @@
             // 
             this.label5.AutoSize = true;
             this.label5.ForeColor = System.Drawing.Color.Blue;
-            this.label5.Location = new System.Drawing.Point(152, 49);
+            this.label5.Location = new System.Drawing.Point(132, 47);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(82, 13);
             this.label5.TabIndex = 32;
             this.label5.Text = "текущий порог";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.Color.Blue;
-            this.label4.Location = new System.Drawing.Point(184, 11);
+            this.label4.Location = new System.Drawing.Point(152, 10);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(49, 13);
             this.label4.TabIndex = 31;
             this.label4.Text = "фототок";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // porogLamp
             // 
@@ -792,6 +811,47 @@
             this.photoCurrent.Text = "0";
             this.photoCurrent.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(277, 655);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(105, 39);
+            this.button2.TabIndex = 45;
+            this.button2.Text = "запись текста окна";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // checkBoxText
+            // 
+            this.checkBoxText.AutoSize = true;
+            this.checkBoxText.Location = new System.Drawing.Point(185, 653);
+            this.checkBoxText.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBoxText.Name = "checkBoxText";
+            this.checkBoxText.Size = new System.Drawing.Size(15, 14);
+            this.checkBoxText.TabIndex = 46;
+            this.checkBoxText.UseVisualStyleBackColor = true;
+            this.checkBoxText.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(105, 669);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(148, 26);
+            this.label6.TabIndex = 47;
+            this.label6.Text = "включение редактирование\r\n          данных в окне";
+            // 
+            // buttonRefresh
+            // 
+            this.buttonRefresh.Location = new System.Drawing.Point(296, 40);
+            this.buttonRefresh.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonRefresh.Name = "buttonRefresh";
+            this.buttonRefresh.Size = new System.Drawing.Size(68, 30);
+            this.buttonRefresh.TabIndex = 8;
+            this.buttonRefresh.Text = "Refresh";
+            this.buttonRefresh.UseVisualStyleBackColor = true;
+            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
+            // 
             // Generation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(106F, 106F);
@@ -800,6 +860,9 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.ClientSize = new System.Drawing.Size(874, 720);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.checkBoxText);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.gbSetLamp);
             this.Controls.Add(this.btReset);
@@ -902,6 +965,11 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox porogLamp;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonTime;
+        private System.Windows.Forms.CheckBox checkBoxText;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button buttonRefresh;
     }
 }
 

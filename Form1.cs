@@ -40,15 +40,55 @@ namespace WindowsFormsApp1
         public Generation()
         {
             InitializeComponent();
-            
+            // ----- словарь команд
+            Dictionary<string, string> command = new Dictionary<string, string>()
+        {
+             { "проверка температуры", "t"},
+             { "проверка секунды", "S"},
+             { "проверка версии прошивки", "v"},
+             { "автоподстройки по секунде", "o"},
+             { "проверка параметров", "V"},
+             { "время наработки изделия в часах", "W"}
+        };
+
+            cbCommand.DataSource = new BindingSource(command, null);
+            cbCommand.DisplayMember = "Key";
+            cbCommand.ValueMember = "Value";
+
 
         }
 
-      
+
 
 
 
         //---------объявление порта и его определение
+
+        private void LoadPort()
+        {
+             
+            this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
+            try
+            {
+                cbPort.Items.Clear();
+                cbPort.ResetText();
+                string[] ports = SerialPort.GetPortNames();
+                cbPort.Items.AddRange(ports);
+                cbPort.SelectedIndex = 0;
+                btnClose.Enabled = false;
+                //serialPort1.DiscardInBuffer();
+                // serialPort1.ReadTimeout = 100;
+            }
+
+            catch
+            {
+                MessageBox.Show("Нет ни одного порта");
+               
+
+            }
+
+            ResetFlagAll();
+        }
         public object SerialPort1 { get; private set; }
 
        
@@ -59,37 +99,10 @@ namespace WindowsFormsApp1
 
          private void Generation_Load(object sender, EventArgs e)
         {
-            // vvodbayt();
 
-            //timer1.Start();
-            // ----- словарь команд
-            Dictionary<string, string> command = new Dictionary<string, string>()
-        {
-             { "проверка температуры", "t"},
-             { "проверка секунды", "S"},
-             { "проверка версии прошивки", "v"}
-        };
-            cbCommand.DataSource = new BindingSource(command, null);
-            cbCommand.DisplayMember = "Key";
-            cbCommand.ValueMember = "Value";
-
-            try
-                {
-                    string[] ports = SerialPort.GetPortNames();
-                    cbPort.Items.AddRange(ports);
-                    cbPort.SelectedIndex = 0;
-                    btnClose.Enabled = false;
-                    //serialPort1.DiscardInBuffer();
-                   // serialPort1.ReadTimeout = 100;
-                }
-
-                catch
-                {
-                    MessageBox.Show("Нет ни одного порта");
-
-                }
-
-            ResetFlagAll();
+            LoadPort();
+       
+           
         }
         //---------------------------------------------------------
 
@@ -280,8 +293,17 @@ namespace WindowsFormsApp1
         void Sendasc(string str)
         {
             ResetFlagAll();
-            serialPort1.Write(str);
-            serialPort1.DiscardOutBuffer();
+
+            if (serialPort1.IsOpen)
+            {
+                serialPort1.Write(str);
+                serialPort1.DiscardOutBuffer();
+            }
+            else
+            {
+                MessageBox.Show("Поорт закрыт");
+            }
+            
           //  SendascFlag = 1;
 
         }
@@ -291,7 +313,7 @@ namespace WindowsFormsApp1
 
         //-------нажатие кнопок правельное
         private void Generation_KeyPress(object sender, KeyPressEventArgs e)
-        {
+        {   if(txMesenger.ReadOnly && serialPort1.IsOpen)
             if (!txCommand.Focused && !tbFplus.Focused && !tbFminus.Focused && !nUpDownSetLamp.Focused && !tbSerialN.Focused && !nUpDownSetNumber.Focused &&!txCommand.Focused)
                 try
                 {
@@ -431,7 +453,7 @@ namespace WindowsFormsApp1
                     string value = ((KeyValuePair<string, string>)cbCommand.SelectedItem).Value;
                     Sendasc(value);
                     SendascFlag = 1;
-                    txMesenger.Text = txMesenger.Text + Convert.ToString(value) + "\t проверка установленого порога лампы" + Environment.NewLine/*"\r\n"*/;
+                    txMesenger.Text = txMesenger.Text + Convert.ToString(value) + "\t" + ((KeyValuePair<string, string>)cbCommand.SelectedItem).Key + Environment.NewLine/*"\r\n"*/;
                     return;
 
 
@@ -445,6 +467,25 @@ namespace WindowsFormsApp1
 
             
         }
+        //---------запись текста окна в файл
+        private  void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SaveFileDialog saveMyFile = new SaveFileDialog();
+                saveMyFile.ShowDialog();
+                string path = saveMyFile.FileName;
+                DateTime localDate = DateTime.Now;
+                string myDate = localDate.ToString();
+                string[] str = { txMesenger.Text, myDate, "\n***********\n" };
+                System.IO.File.WriteAllLines(path, str);
+            }
+            catch
+            {
+            }
+        }
+
+
 
 
 
@@ -550,7 +591,34 @@ namespace WindowsFormsApp1
 
 
         //*****************************************
-        //---------**************кнопки на форме
+        //---------**************кнопки на форме-----------------
+
+        //--- кнопка текущие время
+        private void buttonTime_Click(object sender, EventArgs e)
+        {
+            DateTime localDate = DateTime.Now;
+            txMesenger.Text = txMesenger.Text + localDate.ToLongDateString() +"\t\t" + localDate.ToLongTimeString() + Environment.NewLine;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+            if (txMesenger.ReadOnly == true) txMesenger.ReadOnly = false;
+            else txMesenger.ReadOnly = true; 
+            
+        }
+
+        private void checkBoxCommandList_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            LoadPort();
+        }
+
+
 
         //--------------увеличение частоты с кнопки
         private void btPlusSint_Click(object sender, EventArgs e)
@@ -627,9 +695,18 @@ namespace WindowsFormsApp1
         //----------------если нажали проверка установленого порога лампы
         private void button1_Click_1(object sender, EventArgs e)
         {
-            Sendasc("X");
-            LampLookPhotoFlagg = 1;
-            txMesenger.Text = txMesenger.Text + Convert.ToString('X') + "\t проверка установленого порога лампы" + Environment.NewLine/*"\r\n"*/;
+
+            if (serialPort1.IsOpen)
+            {
+                Sendasc("X");
+                LampLookPhotoFlagg = 1;
+                txMesenger.Text = txMesenger.Text + Convert.ToString('X') + "\t проверка установленого порога лампы" + Environment.NewLine/*"\r\n"*/;
+            }
+            else
+            {
+                MessageBox.Show("Поорт закрыт");
+            }
+           
         }
 
 
